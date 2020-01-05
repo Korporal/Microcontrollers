@@ -15,8 +15,8 @@ void SysTick_Handler(void)
 #define RED GPIO_PIN_14
 #define BLUE GPIO_PIN_15
 
-void LED_ON(uint16_t ID);
-void LED_OFF(uint16_t ID);
+void LED_ON(uint16_t, uint32_t);
+void LED_OFF(uint16_t , uint32_t);
 
 
 int main(void)
@@ -44,48 +44,41 @@ int main(void)
 
 	for (;;)
 	{
-		LED_ON(GREEN);
-		LED_ON(ORANGE);
-		LED_ON(RED);
-		LED_ON(BLUE);
+		LED_ON(GREEN,0);
+		LED_ON(ORANGE,0);
+		LED_ON(RED,0);
+		LED_ON(BLUE,100);
 		
-		HAL_Delay(100);
+		LED_OFF(GREEN,0);
+		LED_OFF(ORANGE,0);
+		LED_OFF(RED,0);
+		LED_OFF(BLUE,100);
 		
-		LED_OFF(GREEN);
-		LED_OFF(ORANGE);
-		LED_OFF(RED);
-		LED_OFF(BLUE);
+		LED_ON(GREEN, 100);
+		LED_OFF(GREEN, 100);
 		
-		HAL_Delay(100);
-		
-		LED_ON(GREEN);
-		HAL_Delay(100);
-		LED_OFF(GREEN);
-		HAL_Delay(100);
-		
-		LED_ON(ORANGE);
-		HAL_Delay(100);
-		LED_OFF(ORANGE);
-		HAL_Delay(100);
+		LED_ON(ORANGE, 100);
+		LED_OFF(ORANGE, 100);
 
-		LED_ON(RED);
-		HAL_Delay(100);
-		LED_OFF(RED);
-		HAL_Delay(100);
+		LED_ON(RED, 100);
+		LED_OFF(RED, 100);
 
-		LED_ON(BLUE);
-		HAL_Delay(100);
-		LED_OFF(BLUE);
-		HAL_Delay(100);
+		LED_ON(BLUE, 100);
+		LED_OFF(BLUE, 100);
 	}
 }
 
-void LED_ON(uint16_t ID)
+void LED_ON(uint16_t ID, uint32_t Delay)
 {
 	HAL_GPIO_WritePin(GPIOD, ID, GPIO_PIN_SET);
+	
+	if (Delay > 0)
+		HAL_Delay(Delay);
 }
-
-void LED_OFF(uint16_t ID)
+void LED_OFF(uint16_t ID, uint32_t Delay)
 {
 	HAL_GPIO_WritePin(GPIOD, ID, GPIO_PIN_RESET);
+
+	if (Delay > 0)
+		HAL_Delay(Delay);
 }
