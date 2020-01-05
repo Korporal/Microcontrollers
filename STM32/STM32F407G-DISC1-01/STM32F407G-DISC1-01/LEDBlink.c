@@ -1,3 +1,9 @@
+/*----------------------------------------------------------*/
+/* Simple LED example for the STM32F407G-DISC1 board.		*/
+/* Some of the info for this was obtained here				*/
+/* https://visualgdb.com/tutorials/arm/stm32/f4_discovery/	*/
+/*----------------------------------------------------------*/
+
 #include <stm32f4xx_hal.h>
 #include <stm32_hal_legacy.h>
 
