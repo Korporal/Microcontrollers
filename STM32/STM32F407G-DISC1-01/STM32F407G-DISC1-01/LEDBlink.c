@@ -25,6 +25,9 @@ typedef struct led_arguments
 	uint32_t delay;
 } LedArgs, * LedArgs_ptr;
 
+#define lengthof(X) (sizeof((X))/sizeof(*(X)))
+
+
 LedArgs argstable[] = 
 { 
 	{LIT, GREEN, 0}, 
@@ -93,7 +96,6 @@ LedArgs argstable[] =
 	{OFF, BLUE, 100}
 };
 
-#define argslength (sizeof(argstable)/sizeof(*argstable))
 
 void LED(LedArgs_ptr);
 
@@ -122,12 +124,11 @@ int main(void)
 
 	while (1)
 	{
-		for (int I = 0; I < argslength; I++)
+		for (int I = 0; I < lengthof(argstable); I++)
 		{
 			LED(&argstable[I]);
 		}
 	}
-
 }
 
 void LED(LedArgs_ptr Args_ptr)
