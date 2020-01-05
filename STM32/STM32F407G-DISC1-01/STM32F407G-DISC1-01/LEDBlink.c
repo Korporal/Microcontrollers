@@ -14,12 +14,88 @@ void SysTick_Handler(void)
 #define ORANGE GPIO_PIN_13
 #define RED GPIO_PIN_14
 #define BLUE GPIO_PIN_15
-
-void LED_LIT(uint16_t, uint32_t);
-void LED_OFF(uint16_t , uint32_t);
-
+#define LIT GPIO_PIN_SET
+#define OFF GPIO_PIN_RESET
 
 
+typedef struct led_arguments
+{
+	GPIO_PinState state;
+	uint16_t color;
+	uint32_t delay;
+} LedArgs, * LedArgs_ptr;
+
+LedArgs argstable[] = 
+{ 
+	{LIT, GREEN, 0 }, 
+	{LIT, RED, 0},
+	{LIT, BLUE, 100},
+	{LIT, BLUE, 100},
+	{LIT, GREEN, 100},
+	{LIT, RED, 0},
+	{LIT, GREEN, 100},
+	{OFF, GREEN, 0},
+	{LIT, GREEN, 0 }, 
+	{LIT, ORANGE, 100},
+	{OFF, ORANGE, 100},
+	{LIT, RED, 100},
+	{OFF, ORANGE, 0},
+	{OFF, GREEN, 100},
+	{OFF, RED, 100},
+	{OFF, GREEN, 100},
+	{LIT, BLUE, 100},
+	{OFF, BLUE, 100},
+	{OFF, RED, 0},
+	{LIT, ORANGE, 0},
+	{OFF, BLUE, 100},
+	{OFF, GREEN, 0},
+	{LIT, ORANGE, 100},
+	{LIT, RED, 100},
+	{OFF, ORANGE, 100},
+	{LIT, RED, 100},
+	{LIT, RED, 0},
+	{LIT, BLUE, 100},
+	{LIT, GREEN, 100},
+	{OFF, GREEN, 0},
+	{LIT, ORANGE, 100},
+	{OFF, ORANGE, 100},
+	{LIT, GREEN, 0 }, 
+	{OFF, ORANGE, 0},
+	{OFF, RED, 100},
+	{OFF, GREEN, 100},
+	{LIT, BLUE, 100},
+	{OFF, BLUE, 100},
+	{OFF, RED, 0},
+	{LIT, ORANGE, 0},
+	{OFF, BLUE, 100},
+	{OFF, ORANGE, 0},
+	{LIT, GREEN, 0 }, 
+	{LIT, RED, 0},
+	{LIT, BLUE, 100},
+	{OFF, RED, 100},
+	{LIT, GREEN, 100},
+	{OFF, GREEN, 0},
+	{LIT, ORANGE, 100},
+	{OFF, ORANGE, 100},
+	{LIT, RED, 100},
+	{OFF, ORANGE, 0},
+	{OFF, RED, 100},
+	{LIT, ORANGE, 0},
+	{OFF, GREEN, 100},
+	{LIT, BLUE, 100},
+	{OFF, BLUE, 100},
+	{OFF, RED, 0},
+	{OFF, BLUE, 100},
+	{LIT, BLUE, 100},
+	{OFF, BLUE, 100},
+	{OFF, RED, 0},
+	{LIT, ORANGE, 0},
+	{OFF, BLUE, 100}
+};
+
+#define argslength (sizeof(argstable)/sizeof(*argstable))
+
+void LED(LedArgs_ptr);
 
 int main(void)
 {
@@ -44,43 +120,20 @@ int main(void)
 	GPIO_InitStructure.Pin = GPIO_PIN_15;
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-	for (;;)
+	while (1)
 	{
-		LED_LIT(GREEN,0);
-		LED_LIT(ORANGE,0);
-		LED_LIT(RED,0);
-		LED_LIT(BLUE,100);
-		
-		LED_OFF(GREEN,0);
-		LED_OFF(ORANGE,0);
-		LED_OFF(RED,0);
-		LED_OFF(BLUE,100);
-		
-		LED_LIT(GREEN, 100);
-		LED_OFF(GREEN, 100);
-		
-		LED_LIT(ORANGE, 100);
-		LED_OFF(ORANGE, 100);
-
-		LED_LIT(RED, 100);
-		LED_OFF(RED, 100);
-
-		LED_LIT(BLUE, 100);
-		LED_OFF(BLUE, 100);
+		for (int I = 0; I < argslength; I++)
+		{
+			LED(&argstable[I]);
+		}
 	}
+
 }
 
-void LED_LIT(uint16_t ID, uint32_t Delay)
+void LED(LedArgs_ptr Args_ptr)
 {
-	HAL_GPIO_WritePin(GPIOD, ID, GPIO_PIN_SET);
-	
-	if (Delay > 0)
-		HAL_Delay(Delay);
-}
-void LED_OFF(uint16_t ID, uint32_t Delay)
-{
-	HAL_GPIO_WritePin(GPIOD, ID, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, Args_ptr->color, Args_ptr->state);
 
-	if (Delay > 0)
-		HAL_Delay(Delay);
+	if (Args_ptr->delay > 0)
+		HAL_Delay(Args_ptr->delay);
 }
