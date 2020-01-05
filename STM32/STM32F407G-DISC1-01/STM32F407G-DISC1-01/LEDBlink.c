@@ -27,7 +27,7 @@ typedef struct led_arguments
 
 LedArgs argstable[] = 
 { 
-	{LIT, GREEN, 0 }, 
+	{LIT, GREEN, 0}, 
 	{LIT, RED, 0},
 	{LIT, BLUE, 100},
 	{OFF, BLUE, 2},
@@ -64,7 +64,7 @@ LedArgs argstable[] =
 	{OFF, RED, 23},
 	{OFF, GREEN, 100},
 	{LIT, BLUE, 100},
-	{OFF, BLUE, 100},
+	{OFF, BLUE, 63},
 	{OFF, RED, 0},
 	{LIT, ORANGE, 0},
 	{OFF, BLUE, 49},
@@ -72,7 +72,7 @@ LedArgs argstable[] =
 	{LIT, GREEN, 0 }, 
 	{LIT, RED, 0},
 	{LIT, BLUE, 100},
-	{OFF, RED, 100},
+	{OFF, RED, 42},
 	{LIT, GREEN, 100},
 	{OFF, GREEN, 0},
 	{LIT, ORANGE, 100},
