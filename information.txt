@@ -1,0 +1,12 @@
+Some boards may not react correctly when a non-USB power supply is applied.
+
+This was found to be resolved by a firmware update that is connected with how the USB port is managed.
+
+This was run and resolved the problem on an STM32F407G-DISC1 board:
+
+https://www.st.com/en/development-tools/stsw-link007.html
+
+Power was then applied to the 5v and GND pins that are on the right hand side of the board, the topmost pins on the large connector.
+
+This all worked.
+
