@@ -134,7 +134,7 @@ int main(void)
 {
 	HAL_Init();
 	
-	InitializeTimer();
+	//InitializeTimer();
 	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(TIM2_IRQn);
 	
@@ -162,8 +162,68 @@ int main(void)
 
 	int timerValue;
 	
+	GPIO_TypeDef* GPIOx = GPIOD;
+	uint16_t GPIO_Pin = GPIO_PIN_15;
+	uint16_t OTH = (uint32_t)GPIO_Pin << 16U;
+	
+	//*((volatile uint32_t*) 0x40023C00) |= (0b111 << 8);
+	
 	while (1)
 	{
+		//HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+		
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+		GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+		GPIOx->BSRR = GPIO_Pin;
+
+		
+//		if((GPIOx->ODR & GPIO_Pin) == GPIO_Pin)
+//		{
+//			GPIOx->BSRR = (uint32_t)GPIO_Pin << 16U;
+//		}
+//		else
+//		{
+//			GPIOx->BSRR = GPIO_Pin;
+//		}
+		
+
 		; // do nothing here, the interrupt handler does all the work.
 	}
 }
