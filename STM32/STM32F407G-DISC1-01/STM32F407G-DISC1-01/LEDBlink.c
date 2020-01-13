@@ -105,11 +105,43 @@ LedArgs argstable[] =
 
 void LED(LedArgs_ptr);
 
+static TIM_HandleTypeDef s_TimerInstance = { 
+	.Instance = TIM2
+};
+ 
+void InitializeTimer()
+{
+	__TIM2_CLK_ENABLE();
+	s_TimerInstance.Init.Prescaler = 2;
+	s_TimerInstance.Init.CounterMode = TIM_COUNTERMODE_UP;
+	s_TimerInstance.Init.Period = 64;
+	s_TimerInstance.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	s_TimerInstance.Init.RepetitionCounter = 0;
+	HAL_TIM_Base_Init(&s_TimerInstance);
+	HAL_TIM_Base_Start_IT(&s_TimerInstance);
+}
+ 
+extern void TIM2_IRQHandler()
+{
+	HAL_TIM_IRQHandler(&s_TimerInstance);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+}
 int main(void)
 {
 	HAL_Init();
-
+	
+	InitializeTimer();
+	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM2_IRQn);
+	
 	__GPIOD_CLK_ENABLE();
+	
+	uint32_t c = HAL_RCC_GetHCLKFreq();
+	
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
@@ -128,12 +160,11 @@ int main(void)
 	GPIO_InitStructure.Pin = GPIO_PIN_15;
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
 
+	int timerValue;
+	
 	while (1)
 	{
-		for (int I = 0; I < lengthof(argstable); I++)
-		{
-			LED(&argstable[I]);
-		}
+		; // do nothing here, the interrupt handler does all the work.
 	}
 }
 
@@ -141,6 +172,7 @@ void LED(LedArgs_ptr Args_ptr)
 {
 	HAL_GPIO_WritePin(GPIOD, Args_ptr->color, Args_ptr->state);
 
-	if (Args_ptr->delay > 0)
-		HAL_Delay(Args_ptr->delay);
+//	if (Args_ptr->delay > 0)
+//		HAL_Delay(Args_ptr->delay);
 }
+
