@@ -4,7 +4,7 @@
 void Delay()
 {
 	int i;
-	for (i = 0; i < 100000; i++)
+	for (i = 0; i < 1000; i++)
 		asm("nop");
 }
 
@@ -14,7 +14,7 @@ int main()
   
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
   
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -22,9 +22,9 @@ int main()
 
   for (;;)
   {
-	  GPIO_WriteBit(GPIOD, GPIO_Pin_12, Bit_SET);
+	  GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
 	  Delay();
-	  GPIO_WriteBit(GPIOD, GPIO_Pin_12, Bit_RESET);
+	  GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
 	  Delay();
   }
 }
