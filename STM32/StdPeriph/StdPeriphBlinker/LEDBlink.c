@@ -10,6 +10,23 @@ void Delay()
 		asm("nop");
 }
 
+void XGPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
+{
+	/* Check the parameters */
+//	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+//	assert_param(IS_GET_GPIO_PIN(GPIO_Pin));
+//	assert_param(IS_GPIO_BIT_ACTION(BitVal));
+
+	if (BitVal != Bit_RESET)
+	{
+		GPIOx->BSRRL = GPIO_Pin;
+	}
+	else
+	{
+		GPIOx->BSRRH = GPIO_Pin;
+	}
+}
+
 int main(void)
 {
 	// Resets the clock configuration to the default reset state
@@ -67,28 +84,30 @@ int main(void)
 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 		GPIO_Init(GPIOD, &GPIO_InitStructure);
 
+		int X = 0;
+		
 		for (;;)
 		{
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
-			GPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_SET);
+			XGPIO_WriteBit(GPIOD, GPIO_Pin_15, Bit_RESET);
 		}
 	}
 }
