@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LEDBlink.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="system_stm32f4xx.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -324,13 +321,18 @@
     <ClInclude Include="$(BSP_ROOT)\STM32F4xxxx\CMSIS_StdPeriph\RTOS\Template\cmsis_os.h">
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
-    <None Include="EmbeddedProject1-Debug.vgdbsettings">
-      <Filter>VisualGDB settings</Filter>
-    </None>
-    <None Include="EmbeddedProject1-Release.vgdbsettings">
-      <Filter>VisualGDB settings</Filter>
-    </None>
     <None Include="stm32.xml">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <ClCompile Include="Phaser.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Phaser-Debug.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="Phaser-Release.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
   </ItemGroup>
