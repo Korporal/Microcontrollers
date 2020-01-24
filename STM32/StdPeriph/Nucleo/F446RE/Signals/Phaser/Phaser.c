@@ -33,6 +33,7 @@ int main()
 	// Calculate a table of Sine values adjusted to be in
 	// increments of 360/4096 of a degree. We also compensate 
 	// for the fact that DAC ouput can't reach ground or the +ve rail.
+	// A Phase of 4096 corresponds to 360 degrees.
 	
 	for(int I = 0 ; I < 4096 ; I++)
 	{
