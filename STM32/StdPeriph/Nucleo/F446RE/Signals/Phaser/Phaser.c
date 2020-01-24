@@ -12,6 +12,10 @@
 int32_t SINEWAVE[4096];
 void Scan(int Offset, uint32_t * DACAReg, uint32_t * DACBReg);
 
+// Simple examples of generating sine waves on each DAC.
+// DAC1 drives output PA4 - Pin A2 of CN8
+// DAC2 drives output PA5 - Pin SCK/D13 of CN9
+
 int main()
 {
 	
