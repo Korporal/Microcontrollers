@@ -16,6 +16,7 @@
     <BSP_ID>com.sysprogs.arm.stm32</BSP_ID>
     <BSP_VERSION>2019.12</BSP_VERSION>
     <InPlaceBSPSubdir />
+    <ProjectName>Phaser</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
