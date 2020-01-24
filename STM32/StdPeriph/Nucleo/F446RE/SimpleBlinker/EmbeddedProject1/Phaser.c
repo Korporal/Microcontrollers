@@ -6,58 +6,15 @@
 #define RAD (double)(PI/180.0)
 #define DPB (double)(360.0 / 4096.0)
 
-typedef struct MODE_Pair_Struct
-{
-	unsigned int RW0 : 1;
-	unsigned int RW1 : 1;
-} __attribute__((packed)) MODE_Pair;
-
-typedef struct MODER_Struct
-{
-	MODE_Pair PAIR[16];
-} __attribute__((packed)) MODER;
-
-typedef struct OTYPER_Struct
-{
-	
-} OTYPER;
-typedef struct GPIO_Struct
-{
-	MODER MODER;
-	OTYPER OTYPER;
-} GPIO;
-
-typedef struct AHB1_Struct
-{
-	GPIO GPIO[8];
-} * AHB1_Ptr;
-
-static AHB1_Ptr AHB1 = (AHB1_Ptr )(0x40020000);
-
-// The max DAC output voltage is reached before we reach 0x0FFF
-// The min DAC output voltage is reached before we reach 0x0000
-
 #define MINV 0x032
 #define MAXV 0xe1C
 
-void Delay()
-{
-	int i;
-	for (i = 0; i < 10; i++)
-		asm("nop");
-}
-	int32_t SINEWAVE[4096];
+int32_t SINEWAVE[4096];
 void Scan(int Offset, uint32_t * DACAReg, uint32_t * DACBReg);
 
 int main()
 {
 	
-	#define MODE_RESET 0;
-	#define MODE_GP_OUTPUT 1
-	#define MODE_ALTERNATE 2
-	#define MODE_ANALOG 3
-	
-
 	RCC->AHB1ENR |= 1;
 	GPIOA->MODER |= 0x00000F00; // PA4, PA5 Analog
 	RCC->APB1ENR |= 1 << 29;    // Enable DAC Clock
@@ -68,6 +25,10 @@ int main()
 	int32_t max = 0;
 	
 	double angle;
+	
+	// Calculate a table of Sine values adjusted to be in
+	// increments of 360/4096 of a degree. We also compensate 
+	// for the fact that DAC ouput can't reach ground or the +ve rail.
 	
 	for(int I = 0 ; I < 4096 ; I++)
 	{
@@ -84,6 +45,11 @@ int main()
 	}
 	
 
+	// Repeatedly scan the sinewave table. One call to 'Scan'
+	// will generate one cycle and the phase of the signal
+	// written to DAC2 relative to DAC1 is dictated by the 
+	// 'Phase' value.
+	
 	while (1)
 	{
 		for (int Phase = 0; Phase < 4096; Phase++)
@@ -94,9 +60,16 @@ int main()
 	
 }
 
+/*-----------------------------------------------------------*/
+/* This function 'plays' the entire digitized sinewave table */
+/* to each DAC in an interleaved manner. The phase of the    */
+/* the second wave relative to the first is dictated by the  */
+/* Offset argument.                                          */
+/*-----------------------------------------------------------*/
+
 void Scan(int Offset, uint32_t * DACAReg, uint32_t * DACBReg)
 {
-	int B = 0;
+	int B = 0; // Always start at 0 for DAC B
 	
 	for (int I = Offset; I < 4096; I++)
 	{
