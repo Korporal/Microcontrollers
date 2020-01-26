@@ -212,15 +212,14 @@ extern MODES MODE =
 	}
 };
 
-
-
 int main()
 {
 
 	
 	RCC->AHB1ENR |= AHB1ENR.ENABLE_GPIOA_CLOCK;
 	
-	GPIOA->MODER |= MODE.ANALOG.P4 | MODE.ANALOG.P5;
+	GPIOA->MODER |= MODE.ANALOG.P4 | MODE.ANALOG.P5; // Expecting this to be optimized and gen same code as line below
+	GPIOA->MODER |= 3 << 8 | 3 << 10;
 	
 	RCC->APB1ENR |= ENABLE_DAC_CLOCK;    // Enable DAC Clock
 	DAC->CR |= ENABLE_DAC1 | ENABLE_DAC2;      // Enable each DAC
