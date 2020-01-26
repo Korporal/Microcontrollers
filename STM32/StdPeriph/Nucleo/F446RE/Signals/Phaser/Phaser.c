@@ -101,6 +101,7 @@ extern  AHB1ENR_FLAGS AHB1ENR =
 //
 //extern 
 
+// Defines the GPIO ports available.
 typedef struct 
 {
 	const uint32_t P0;
@@ -122,6 +123,7 @@ typedef struct
 } MODER_PORTS;
 
 
+// Defines the available modes for a GPIO port.
 typedef struct 
 {
 	const MODER_PORTS INPUT;
@@ -130,6 +132,7 @@ typedef struct
 	const MODER_PORTS ANALOG;
 } MODES;
 
+// Defines the IO direction and modes for GPIO ports.
 extern MODES MODE =
 { 
 	{
@@ -169,7 +172,6 @@ extern MODES MODE =
 		1 << 28,
 		1 << 30,
 	},
-
 	
 	{ 
 		2 << 0,
@@ -189,6 +191,7 @@ extern MODES MODE =
 		2 << 28,
 		2 << 30,
 	},
+	
 	{ 
 		3 << 0,
 		3 << 2,
