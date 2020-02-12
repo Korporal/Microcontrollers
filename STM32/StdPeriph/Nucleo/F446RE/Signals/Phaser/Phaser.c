@@ -3,7 +3,6 @@
 #include <math.h>
 
 #include <peripherals.h>
-
 #define PI 3.14159265358979323846
 #define RAD (double)(PI/180.0)
 #define DPB (double)(360.0 / 4096.0)
@@ -18,22 +17,63 @@ void Scan(int Offset, uint32_t * DACAReg, uint32_t * DACBReg);
 // DAC1 drives output PA4 - Pin A2 of CN8
 // DAC2 drives output PA5 - Pin SCK/D13 of CN9
 
-#define ENABLE_DAC1 0x00010000
-#define ENABLE_DAC2 0x00000001
+#define ENABLE_DAC1     0x00000001 // DAC1 is PA4 = 
+#define ENABLE_DAC2     0x00010000 // DAC2 is PA5
+#define ENABLE_DAC2_DMA 0x10000000
+#define ENABLE_DAC1_DMA 0x00001000
+
+void DMA1_Stream5_IRQHandler();
+void PopulateTable();
+
+uint32_t interrupts = 0;
 
 int main()
 {
-
+	
+	uint32_t looper = 0;
+	uint32_t dummy;
+	
+	PopulateTable();
+	
 	RCC->AHB1ENR |= AHB1ENR.ENABLE_GPIOA_CLOCK | AHB1ENR.ENABLE_DMA_1;
-	
+	dummy = RCC->AHB1ENR; // SEE: https://www.st.com/content/ccc/resource/technical/document/errata_sheet/38/e6/37/64/08/38/45/67/DM00068628.pdf/files/DM00068628.pdf/jcr:content/translations/en.DM00068628.pdf
 	GPIOA->MODER |= MODER.ANALOG.P4 | MODER.ANALOG.P5; // Expecting this to be optimized and gen same code as line below
-	
 	RCC->APB1ENR |= APB1ENR.ENABLE_DAC_CLOCK;    // Enable DAC Clock
+	DAC->CR |= ENABLE_DAC1 | ENABLE_DAC1_DMA; 
 	
-	DAC->CR |= ENABLE_DAC1 | ENABLE_DAC2;      // Enable each DAC
+	// DMA1, S5, C7 -> DAC1 -> 
+	// DMA1, S6, C7 -> DAC2
 	
-	// DMA1 can use DAC1 and DAC2 on DMA channel 7, streams 5 & 6 respectively.
+	DMA1->HIFCR = DMA_HIFCR.Stream5.CDMEIF | DMA_HIFCR.Stream5.CFEIF | DMA_HIFCR.Stream5.CHTIF | DMA_HIFCR.Stream5.CTCIF | DMA_HIFCR.Stream5.CTEIF;
 	
+	DMA1_Stream5->CR = 0;
+
+	while (DMA1_Stream5->CR & 1)
+	{
+		looper++;
+	}
+	
+	DMA1_Stream5->PAR  = (uint32_t)&(DAC->DHR12R1);
+	DMA1_Stream5->M0AR = (uint32_t)(SINEWAVE);
+	DMA1_Stream5->NDTR = 4096;
+	DMA1_Stream5->CR  = 0x0E000000;  // Channel 7
+	DMA1_Stream5->CR |= 0x00005440;
+	DMA1_Stream5->CR |= 0x00000016;
+	DMA1_Stream5->FCR = 0;
+	
+	NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+	
+	DMA1_Stream5->CR |= 1;  // enable the dma stream
+	
+	while (1)
+	{
+		looper++;
+	}
+	
+}
+
+void PopulateTable()
+{
 	int32_t value;
 	int32_t min = 0x7FFF;
 	int32_t max = 0;
@@ -57,28 +97,6 @@ int main()
 		
 		SINEWAVE[I] = value;
 	}
-	
-
-	// Repeatedly scan the sinewave table. One call to 'Scan'
-	// will generate one cycle and the phase of the signal
-	// written to DAC2 relative to DAC1 is dictated by the 
-	// 'Phase' value.
-	// A Phase of 4096 corresponds to 360 degrees.
-	
-	while (1)
-	{
-		for (int Phase = 0; Phase < 4096; Phase++)
-		{
-			Scan(Phase, &(DAC->DHR12R1), &(DAC->DHR12R2));
-		}
-		
-//		for (int Phase = 0; Phase < 4096; Phase++)
-//		{
-//			Scan(Phase, &(DAC->DHR12R2), &(DAC->DHR12R1));
-//		}
-
-	}
-	
 }
 
 /*-----------------------------------------------------------*/
@@ -103,4 +121,9 @@ void Scan(int Offset, uint32_t * DACAReg, uint32_t * DACBReg)
 		(*DACAReg) = SINEWAVE[I];
 		(*DACBReg) = SINEWAVE[B++];
 	}
+}
+
+void DMA1_Stream5_IRQHandler()
+{
+	interrupts++;
 }

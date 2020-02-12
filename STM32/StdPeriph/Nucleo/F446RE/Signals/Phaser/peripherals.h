@@ -2,6 +2,22 @@
 #include <_stdint.h>
 typedef struct 
 {
+	const uint32_t CTCIF;
+	const uint32_t CHTIF;
+	const uint32_t CTEIF;
+	const uint32_t CDMEIF;
+	const uint32_t CFEIF;
+
+} DMA_HIFCR_STREAM;
+typedef struct
+{
+	DMA_HIFCR_STREAM Stream7;
+	DMA_HIFCR_STREAM Stream6;
+	DMA_HIFCR_STREAM Stream5;
+	DMA_HIFCR_STREAM Stream4;
+} DMA_HIFCR_FLAGS;
+typedef struct 
+{
 	const uint32_t ENABLE_OTGHSULPI;
 	const uint32_t ENABLE_OTGHS;
 	const uint32_t ENABLE_ETHMACPTP;
@@ -82,6 +98,41 @@ typedef struct
 	const MODER_PORTS ALTERNATE;
 	const MODER_PORTS ANALOG;
 } MODES;
+extern DMA_HIFCR_FLAGS DMA_HIFCR =
+{ 
+		// Stream 7
+        // reserved 4 bits
+		1 << 27,
+		1 << 26,
+		1 << 25,
+		1 << 24,
+		// reserved 1 bit
+		1 << 22,
+	
+		1 << 21,
+		1 << 20,
+		1 << 19,
+		1 << 18,
+		// reserved 1 bit
+		1 << 16,
+
+	    // reserved 4 bits
+
+		1 << 11,
+		1 << 10,
+		1 << 9,
+		1 << 8,
+		// reserved 1 bit
+		1 << 6,
+
+		1 << 5,
+		1 << 4,
+		1 << 3,
+		1 << 2,
+		// reserved 1 bit
+		1 << 0
+		
+};
 extern  AHB1ENR_FLAGS AHB1ENR = 
 {
 	// reserved 1 bit1
