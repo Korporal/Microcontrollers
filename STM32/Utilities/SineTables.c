@@ -31,7 +31,7 @@ void GenerateSineTable(int32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage
 		
 		// the way we use Min or Max is not quite correct yet...
 		
-		value = MinVoltage + (MaxVoltage / 2.0 * (1.0 + sin(angle * RAD)));
+		value = MinVoltage + ((MaxVoltage-MinVoltage) / 2.0 * (1.0 + sin(angle * RAD)));
 		
 		if (value > max)
 			max = value;

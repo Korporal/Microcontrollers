@@ -11,7 +11,8 @@
 extern "C"
 #endif
 	
-	int32_t SINEWAVE[4096];
+int32_t SINEWAVE_1[4096];
+int32_t SINEWAVE_2[4096];
 
 #define MINV 0x032
 #define MAXV 0xe1C
@@ -30,8 +31,9 @@ int main(void)
 	DAC_ChannelConfTypeDef sConfig;
 	DAC_HandleTypeDef hdac;
 	
-	GenerateSineTable(SINEWAVE, MINV, MAXV, &code);
-	
+	GenerateSineTable(SINEWAVE_1, 0, 4095, &code);
+	GenerateSineTable(SINEWAVE_2, 256, 2000, &code);
+
 	HAL_Init();
 
 	__GPIOA_CLK_ENABLE();
@@ -60,10 +62,15 @@ int main(void)
 	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
 	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
 
-	for (;;)
+	while (1)
 	{
-		HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, v);
-		//HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, v);
-		v++;
+		
+		for (int X = 0; X < 4096; X++)
+		{
+			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
+			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
+			v++;
+		}
+		
 	}
 }
