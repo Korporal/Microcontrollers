@@ -4,9 +4,18 @@
 #include <stm32f4xx_dac.h>
 #include <stm32f4xx.h>
 #include <stm32f4xx_hal_rcc.h>
+
+#include "SineTables.h"
+
 #ifdef __cplusplus
 extern "C"
 #endif
+	
+	int32_t SINEWAVE[4096];
+
+#define MINV 0x032
+#define MAXV 0xe1C
+
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
@@ -15,10 +24,13 @@ void SysTick_Handler(void)
 
 int main(void)
 {
+	uint16_t code = 0;
 	HAL_StatusTypeDef status;
 	GPIO_InitTypeDef GPIO_InitStructure;
 	DAC_ChannelConfTypeDef sConfig;
 	DAC_HandleTypeDef hdac;
+	
+	GenerateSineTable(SINEWAVE, MINV, MAXV, &code);
 	
 	HAL_Init();
 
