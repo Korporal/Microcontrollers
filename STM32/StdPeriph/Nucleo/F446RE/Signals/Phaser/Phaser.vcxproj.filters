@@ -327,6 +327,9 @@
     <ClCompile Include="Phaser.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Utilities\SineTables.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Phaser-Debug.vgdbsettings">
@@ -337,7 +340,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+
     <ClInclude Include="peripherals.h">
+
+    <ClInclude Include="..\..\..\..\..\Utilities\SineTables.h">
+
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
