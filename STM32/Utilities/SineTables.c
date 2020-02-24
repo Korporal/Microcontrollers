@@ -9,7 +9,7 @@
 //#define MAXV 0xe1C
 
 
-void GenerateSineTable(int32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage, uint16_t * Status)
+void GenerateSineTable(uint32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage, uint16_t * Status)
 {
 
 	*Status = 0;	
@@ -20,9 +20,9 @@ void GenerateSineTable(int32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage
 	// A Phase of 4096 corresponds to 360 degrees.
 	
 	
-	int32_t value;
-	int32_t min = 0x7FFF;
-	int32_t max = 0;
+	uint32_t value;
+	uint32_t min = 0x7FFF;
+	uint32_t max = 0;
 	double angle;
 	
 	for (int I = 0; I < 4096; I++)
@@ -42,3 +42,4 @@ void GenerateSineTable(int32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage
 		table[I] = value;
 	}
 }
+
