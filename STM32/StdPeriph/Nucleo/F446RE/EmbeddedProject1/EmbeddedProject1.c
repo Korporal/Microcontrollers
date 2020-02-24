@@ -11,11 +11,12 @@
 extern "C"
 #endif
 	
-int32_t SINEWAVE_1[4096];
-int32_t SINEWAVE_2[4096];
+uint32_t SINEWAVE_1[4096];
+uint32_t SINEWAVE_2[4096];
 
 #define MINV 0x032
 #define MAXV 0xe1C
+HAL_StatusTypeDef HAL2_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data);
 
 void SysTick_Handler(void)
 {
@@ -42,8 +43,8 @@ int main(void)
 	
 	GPIO_InitStructure.Pin = GPIO_PIN_4 | GPIO_PIN_5;
 	GPIO_InitStructure.Mode = GPIO_MODE_ANALOG;
-	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
-	GPIO_InitStructure.Pull = GPIO_NOPULL;
+	GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
+	GPIO_InitStructure.Pull = GPIO_PULLDOWN;
 	
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
@@ -62,15 +63,45 @@ int main(void)
 	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
 	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
 
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0);
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
+	
 	while (1)
 	{
 		
 		for (int X = 0; X < 4096; X++)
 		{
-			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
-			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
-			v++;
+			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
+//			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
 		}
 		
 	}
 }
+
+// Putting this here (a clone of the actual function) gives us a large performance boost.
+HAL_StatusTypeDef HAL2_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data)
+{  
+	__IO uint32_t tmp = 0U;
+  
+	/* Check the parameters */
+	assert_param(IS_DAC_CHANNEL(Channel));
+	assert_param(IS_DAC_ALIGN(Alignment));
+	assert_param(IS_DAC_DATA(Data));
+  
+	tmp = (uint32_t)hdac->Instance; 
+	if (Channel == DAC_CHANNEL_1)
+	{
+		tmp += DAC_DHR12R1_ALIGNMENT(Alignment);
+	}
+	else
+	{
+		tmp += DAC_DHR12R2_ALIGNMENT(Alignment);
+	}
+
+	/* Set the DAC channel1 selected data holding register */
+	*(__IO uint32_t *) tmp = Data;
+  
+	/* Return function status */
+	return HAL_OK;
+}
+
