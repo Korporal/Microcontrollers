@@ -16,11 +16,21 @@ uint32_t SINEWAVE_2[4096];
 
 #define MINV 0x032
 #define MAXV 0xe1C
+
+DAC_HandleTypeDef hdac;
+DMA_HandleTypeDef hdma_dac1;
+
+UART_HandleTypeDef huart2;
 __IO uint32_t * FAL_GetDACPtr(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment);
 #define FAL_DACSetValue(P,V) (*P=V)
 
 void SystemClock_Config(void);
 void Error_Handler(void);
+
+static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_DAC_Init(void);
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
@@ -31,9 +41,6 @@ int main(void)
 {
 	uint16_t code = 0;
 	HAL_StatusTypeDef status;
-	GPIO_InitTypeDef GPIO_InitStructure;
-	DAC_ChannelConfTypeDef sConfig;
-	DAC_HandleTypeDef hdac;
 	
 	GenerateSineTable(SINEWAVE_1, 0, 4095, &code);
 	GenerateSineTable(SINEWAVE_2, 256, 2000, &code);
@@ -42,55 +49,31 @@ int main(void)
 	
 	SystemClock_Config();
 
-	__GPIOA_CLK_ENABLE();
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_DAC_Init();		
 	
-	__HAL_RCC_DAC_CLK_ENABLE();
+	hdma_dac1.Instance = DMA1_Stream5;
+	hdma_dac1.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	hdma_dac1.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdma_dac1.Init.MemInc = DMA_MINC_ENABLE;
+	hdma_dac1.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdma_dac1.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdma_dac1.Init.Mode = DMA_NORMAL;
+	hdma_dac1.Init.Priority = DMA_PRIORITY_LOW;
 	
-	GPIO_InitStructure.Pin = GPIO_PIN_4 | GPIO_PIN_5;
-	GPIO_InitStructure.Mode = GPIO_MODE_ANALOG;
-	GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
-	GPIO_InitStructure.Pull = GPIO_PULLDOWN;
+	HAL_DAC_Init(&hdac);
+	HAL_DAC_Start(&hdac, DAC_Channel_1);
 	
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStructure);
+	HAL_DMA_Init(&hdma_dac1);
+	HAL_DMA_Start(&hdma_dac1, (uint32_t )SINEWAVE_1, hdac.Instance->DHR12R2, 4096);
 	
-	hdac.Instance = (DAC_TypeDef*)DAC1;
-	
-	status = HAL_DAC_Init(&hdac);
-	
-	sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
-	sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_DISABLE;
-	
-	status = HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1);
-	status = HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2);
-
-	uint32_t v = 0;
-	
-	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
-	status = HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
-
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0);
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
-	
-	__IO uint32_t DAC_C1 = ((uint32_t)hdac.Instance) + DAC_DHR12R1_ALIGNMENT(DAC_ALIGN_12B_R);
-	__IO uint32_t DAC_C2 = ((uint32_t)hdac.Instance) + DAC_DHR12R2_ALIGNMENT(DAC_ALIGN_12B_R);
-
-	__IO uint32_t * DAC_P1 = FAL_GetDACPtr(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R);
-	__IO uint32_t * DAC_P2 = FAL_GetDACPtr(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R);
+	status = HAL_DMA_PollForTransfer(&hdma_dac1, HAL_DMA_FULL_TRANSFER, HAL_MAX_DELAY);
 	
 	while (1)
 	{
 		
-		for (int X = 0; X < 4096; X++)
-		{
-			FAL_DACSetValue(DAC_P1, SINEWAVE_1[X]);
-			FAL_DACSetValue(DAC_P2, SINEWAVE_2[X]);
-
-//			*DAC_P1 = SINEWAVE_1[X];
-//			*DAC_P2 = SINEWAVE_2[X];
-//			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
-//			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
-		}
-		
+		;
 	}
 }
 
@@ -160,4 +143,92 @@ void Error_Handler(void)
 	/* User can add his own implementation to report the HAL error return state */
 	
 	/* USER CODE END Error_Handler_Debug */
+}
+
+static void MX_DAC_Init(void)
+{
+
+	/* USER CODE BEGIN DAC_Init 0 */
+
+	/* USER CODE END DAC_Init 0 */
+
+	DAC_ChannelConfTypeDef sConfig = { 0 };
+
+	/* USER CODE BEGIN DAC_Init 1 */
+
+	/* USER CODE END DAC_Init 1 */
+	/** DAC Initialization 
+	*/
+	hdac.Instance = DAC;
+	if (HAL_DAC_Init(&hdac) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/** DAC channel OUT1 config 
+	*/
+	sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+	sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+	if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN DAC_Init 2 */
+
+	/* USER CODE END DAC_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+
+	/* DMA controller clock enable */
+	__HAL_RCC_DMA1_CLK_ENABLE();
+
+	/* DMA interrupt init */
+	/* DMA1_Stream5_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOH_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+	/*Configure GPIO pin : PC13 */
+	GPIO_InitStruct.Pin = GPIO_PIN_13;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	/*Configure GPIO pin : PA5 */
+	GPIO_InitStruct.Pin = GPIO_PIN_5;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
 }
