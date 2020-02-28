@@ -16,8 +16,8 @@ uint32_t SINEWAVE_2[4096];
 
 #define MINV 0x032
 #define MAXV 0xe1C
-HAL_StatusTypeDef HAL2_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data);
-
+__IO uint32_t * FAL_GetDACPtr(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment);
+#define FAL_DACSetValue(P,V) (*P=V)
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
@@ -66,29 +66,36 @@ int main(void)
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 0);
 	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
 	
+	__IO uint32_t DAC_C1 = ((uint32_t)hdac.Instance) + DAC_DHR12R1_ALIGNMENT(DAC_ALIGN_12B_R);
+	__IO uint32_t DAC_C2 = ((uint32_t)hdac.Instance) + DAC_DHR12R2_ALIGNMENT(DAC_ALIGN_12B_R);
+
+	__IO uint32_t * DAC_P1 = FAL_GetDACPtr(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R);
+	__IO uint32_t * DAC_P2 = FAL_GetDACPtr(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R);
+	
 	while (1)
 	{
 		
 		for (int X = 0; X < 4096; X++)
 		{
-			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
-//			HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
+			FAL_DACSetValue(DAC_P1, SINEWAVE_1[X]);
+			FAL_DACSetValue(DAC_P2, SINEWAVE_2[X]);
+
+//			*DAC_P1 = SINEWAVE_1[X];
+//			*DAC_P2 = SINEWAVE_2[X];
+//			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[X]);
+//			HAL2_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, SINEWAVE_2[X]);
 		}
 		
 	}
 }
 
-// Putting this here (a clone of the actual function) gives us a large performance boost.
-HAL_StatusTypeDef HAL2_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data)
+__IO uint32_t * FAL_GetDACPtr(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment)
 {  
 	__IO uint32_t tmp = 0U;
   
-	/* Check the parameters */
-	assert_param(IS_DAC_CHANNEL(Channel));
-	assert_param(IS_DAC_ALIGN(Alignment));
-	assert_param(IS_DAC_DATA(Data));
   
-	tmp = (uint32_t)hdac->Instance; 
+    tmp = (uint32_t)hdac->Instance; 
+	
 	if (Channel == DAC_CHANNEL_1)
 	{
 		tmp += DAC_DHR12R1_ALIGNMENT(Alignment);
@@ -99,9 +106,6 @@ HAL_StatusTypeDef HAL2_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, u
 	}
 
 	/* Set the DAC channel1 selected data holding register */
-	*(__IO uint32_t *) tmp = Data;
-  
-	/* Return function status */
-	return HAL_OK;
+	return ((__IO uint32_t *) tmp);
 }
 
