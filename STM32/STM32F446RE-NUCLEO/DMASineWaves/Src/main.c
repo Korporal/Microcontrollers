@@ -24,10 +24,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "math.h"
+#include "SineTables.h"
 /* USER CODE END Includes */
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#include "SineTables.h"
 
 /* USER CODE END PTD */
 
@@ -59,7 +59,6 @@ static void MX_DAC_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 uint32_t SINEWAVE[4096];
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -78,9 +77,9 @@ uint32_t var;
   */
 int main(void)
 {
-	uint16_t status = 0;
 	
   /* USER CODE BEGIN 1 */
+	uint16_t status = 0;
 
   /* USER CODE END 1 */
 
@@ -97,10 +96,10 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  GenerateSineTable(SINEWAVE, 0x032, 0xE1C, 4096, &status);	
 
   /* USER CODE END SysInit */
 	
-  GenerateSineTable(SINEWAVE, 0x032, 0xE1C, 4096, &status);	
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
