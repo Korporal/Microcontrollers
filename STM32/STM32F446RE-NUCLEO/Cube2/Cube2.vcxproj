@@ -54,7 +54,6 @@
       <AdditionalLibraryNames>%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
       <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
       <AdditionalOptions />
-      <LinkerScript />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
@@ -79,7 +78,6 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Utilities\SineTables.c" />
     <ClCompile Include="Src\stm32f4xx_it.c" />
     <ClCompile Include="Src\stm32f4xx_hal_msp.c" />
     <ClCompile Include="Src\main.c" />
@@ -103,7 +101,6 @@
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F4xxxx\StartupFiles\startup_stm32f446xx.c" />
-    <ClInclude Include="..\..\Utilities\SineTables.h" />
     <ClInclude Include="Inc\stm32f4xx_it.h" />
     <ClInclude Include="Inc\stm32f4xx_hal_conf.h" />
     <ClInclude Include="Inc\main.h" />

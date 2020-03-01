@@ -12,7 +12,7 @@
   <url>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2</url>
   <releases>
     <release version="1.0.0">
-     - Generated: 01/03/2020 07:27:03
+     - Generated: 01/03/2020 08:06:23
     </release>
   </releases>
   <requirements>
@@ -137,12 +137,12 @@
         <file category="header" condition="" name="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h"/>
       </files>
     </component>
-    <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="TIM" Cversion="1.0.0">
+    <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="TIM" Cversion="1.24.0RC2">
       <description></description>
       <files>
         <file category="header" condition="" name="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h"/>
-        <file category="source" condition="" name="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c"/>
         <file category="header" condition="" name="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h"/>
+        <file category="source" condition="" name="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c"/>
         <file category="source" condition="" name="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.c"/>
       </files>
     </component>

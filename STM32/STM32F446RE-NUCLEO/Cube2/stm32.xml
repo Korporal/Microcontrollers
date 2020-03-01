@@ -44,11 +44,11 @@
   </TestFrameworkProperties>
   <ImportedProject>
     <ImporterID>com.sysprogs.project_importers.stm32.cubemx</ImporterID>
-    <RelativeProjectPath>Cube2.gpdsc</RelativeProjectPath>
+    <RelativeProjectPath>DAC_TUT.gpdsc</RelativeProjectPath>
     <AllDependencies>
       <ProjectDependency>
-        <RelativePath>Cube2.gpdsc</RelativePath>
-        <Timestamp>132275464237195759</Timestamp>
+        <RelativePath>DAC_TUT.gpdsc</RelativePath>
+        <Timestamp>132275487840763268</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -181,10 +181,10 @@
                   <RelativePath>Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h</RelativePath>
                 </VirtualFileSnapshot>
                 <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c</RelativePath>
+                  <RelativePath>Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h</RelativePath>
                 </VirtualFileSnapshot>
                 <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h</RelativePath>
+                  <RelativePath>Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim.c</RelativePath>
                 </VirtualFileSnapshot>
                 <VirtualFileSnapshot>
                   <RelativePath>Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_tim_ex.c</RelativePath>
@@ -275,11 +275,11 @@
         <IsStaticLibrary>false</IsStaticLibrary>
         <Settings>
           <IncludeDirectories>
-            <string>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2\Inc</string>
-            <string>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2\Drivers\CMSIS\Include</string>
-            <string>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2\Drivers\CMSIS\Device\ST\STM32F4xx\Include</string>
-            <string>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2\Drivers\STM32F4xx_HAL_Driver\Inc</string>
-            <string>D:\Git\GitHub\Korporal\Microcontrollers\STM32\STM32F446RE-NUCLEO\Cube2\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</string>
+            <string>E:\DAC_TUT\DAC_TUT\Inc</string>
+            <string>E:\DAC_TUT\DAC_TUT\Drivers\CMSIS\Include</string>
+            <string>E:\DAC_TUT\DAC_TUT\Drivers\CMSIS\Device\ST\STM32F4xx\Include</string>
+            <string>E:\DAC_TUT\DAC_TUT\Drivers\STM32F4xx_HAL_Driver\Inc</string>
+            <string>E:\DAC_TUT\DAC_TUT\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</string>
           </IncludeDirectories>
           <PreprocessorMacros>
             <string>$$com.sysprogs.bspoptions.primary_memory$$_layout</string>
