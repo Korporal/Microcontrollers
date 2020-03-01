@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "SineTables.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -52,7 +52,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DAC_Init(void);
 /* USER CODE BEGIN PFP */
-
+uint32_t SINEWAVE_1[4096];
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -66,6 +66,10 @@ static void MX_DAC_Init(void);
   */
 int main(void)
 {
+	
+	uint16_t code = 0;
+	uint32_t I = 0;
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -90,6 +94,9 @@ int main(void)
   MX_GPIO_Init();
   MX_DAC_Init();
   /* USER CODE BEGIN 2 */
+	GenerateSineTable(SINEWAVE_1, 0, 4095, &code);
+
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_1);	
 
   /* USER CODE END 2 */
 
@@ -97,9 +104,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+	  /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+	  for (I = 0; I < 4096; I++)
+	  {
+		  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, SINEWAVE_1[I]);
+	  }
+	  
   }
   /* USER CODE END 3 */
 }
