@@ -58,6 +58,7 @@ static void MX_DMA_Init(void);
 static void MX_DAC_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
+uint32_t SINEWAVE[4096];
 
 /* USER CODE END PFP */
 
@@ -88,6 +89,8 @@ void get_sineval ()
   */
 int main(void)
 {
+	uint16_t status = 0;
+	
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -107,6 +110,8 @@ int main(void)
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
+	
+  GenerateSineTable(SINEWAVE, 0x032, 0xE1C, 4096, &status);	
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
@@ -121,7 +126,7 @@ int main(void)
 
   get_sineval();
 
-  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, sine_val, 100, DAC_ALIGN_12B_R);
+  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, 4096, DAC_ALIGN_12B_R);
 
   /* USER CODE END 2 */
 

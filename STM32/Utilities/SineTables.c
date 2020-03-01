@@ -3,13 +3,13 @@
 
 #define PI 3.14159265358979323846
 #define RAD (double)(PI/180.0)
-#define DPB (double)(360.0 / 4096.0)
+//#define DPB (double)(360.0 / 4096.0)
 
 //#define MINV 0x032
 //#define MAXV 0xe1C
 
 
-void GenerateSineTable(uint32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage, uint16_t * Status)
+void GenerateSineTable(uint32_t table[], uint32_t MinVoltage, uint32_t MaxVoltage, uint16_t  Granularity, uint16_t * Status)
 {
 
 	*Status = 0;	
@@ -24,10 +24,11 @@ void GenerateSineTable(uint32_t table[], uint32_t MinVoltage, uint32_t MaxVoltag
 	uint32_t min = 0x7FFF;
 	uint32_t max = 0;
 	double angle;
+	double degreesPerBit = (double)(360.0 / Granularity);
 	
-	for (int I = 0; I < 4096; I++)
+	for (uint16_t I = 0; I < Granularity; I++)
 	{
-		angle = DPB * I;
+		angle = degreesPerBit * I;
 		
 		// the way we use Min or Max is not quite correct yet...
 		
