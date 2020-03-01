@@ -26,6 +26,7 @@
 #include "math.h"
 #include "SineTables.h"
 /* USER CODE END Includes */
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -77,7 +78,6 @@ uint32_t var;
   */
 int main(void)
 {
-	
   /* USER CODE BEGIN 1 */
 	uint16_t status = 0;
 
@@ -99,7 +99,6 @@ int main(void)
   GenerateSineTable(SINEWAVE, 0x032, 0xE1C, 4096, &status);	
 
   /* USER CODE END SysInit */
-	
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
