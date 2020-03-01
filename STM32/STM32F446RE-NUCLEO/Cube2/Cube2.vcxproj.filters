@@ -249,14 +249,20 @@
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h">
       <Filter>Header files\STM32Cube HAL\GPIO</Filter>
     </ClInclude>
-    <None Include="DAC_TUT-Debug.vgdbsettings">
-      <Filter>VisualGDB settings</Filter>
-    </None>
-    <None Include="DAC_TUT-Release.vgdbsettings">
-      <Filter>VisualGDB settings</Filter>
-    </None>
     <None Include="stm32.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
+    <ClCompile Include="..\..\Utilities\SineTables.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cube2-Debug.vgdbsettings" />
+    <None Include="Cube2-Release.vgdbsettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Utilities\SineTables.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
