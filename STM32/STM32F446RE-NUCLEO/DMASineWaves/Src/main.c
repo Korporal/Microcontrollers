@@ -25,9 +25,9 @@
 /* USER CODE BEGIN Includes */
 #include "math.h"
 /* USER CODE END Includes */
-#include "SineTables.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+#include "SineTables.h"
 
 /* USER CODE END PTD */
 
