@@ -130,8 +130,8 @@
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h" />
-    <None Include="Cube2-Debug.vgdbsettings" />
-    <None Include="Cube2-Release.vgdbsettings" />
+    <None Include="DMASineWaves-Debug.vgdbsettings" />
+    <None Include="DMASineWaves-Release.vgdbsettings" />
     <None Include="stm32.xml" />
   </ItemGroup>
 </Project>

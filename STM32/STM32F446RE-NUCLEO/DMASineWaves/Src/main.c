@@ -69,17 +69,6 @@ float value = 0.2;
 
 uint32_t var;
 
-uint32_t sine_val[100];
-
-#define PI 3.1415926
-
-void get_sineval ()
-{
-	for (int i=0;i<100;i++)
-	{
-		sine_val[i] = ((sin(i*2*PI/100) + 1)*(4096/2));
-	}
-}
 
 /* USER CODE END 0 */
 
@@ -123,8 +112,6 @@ int main(void)
 //  HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
 
   HAL_TIM_Base_Start(&htim2);
-
-  get_sineval();
 
   HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, 4096, DAC_ALIGN_12B_R);
 
