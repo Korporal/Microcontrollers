@@ -16,6 +16,17 @@
   *
   ******************************************************************************
   */
+
+/*----------------------------------------------------------------------*/
+/* This sample is for the Nucleo-F446RE board and Visual GDB.           */
+/* It simply generates a sine wave using the DAC, DMA and a TIMER.      */
+/* The frequency of the generated signal depends on timer settings      */
+/* as well as the 'granularity' specified for the sine generation.      */
+/* The less granular (fewer values per cycle) the higher the frequency. */
+/* The output appears at pin A2 on CN8.                                 */
+/* The max granularity is 4096.                                         */
+/*----------------------------------------------------------------------*/
+
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -81,6 +92,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t status = 0;
 	uint32_t counter = 0;
+	uint16_t granularity = 128;
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -96,7 +109,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  GenerateSineTable(SINEWAVE, 0x040, 0xE1C, 128, &status);	
+  GenerateSineTable(SINEWAVE, 0x040, 0xE1C, granularity, &status);	
 
   /* USER CODE END SysInit */
 
@@ -111,7 +124,7 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim2);
 
-  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, 128, DAC_ALIGN_12B_R);
+  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, granularity, DAC_ALIGN_12B_R);
 
   /* USER CODE END 2 */
 
