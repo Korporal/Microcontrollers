@@ -43,12 +43,38 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
     <ClCompile>
       <CLanguageStandard>GNU11</CLanguageStandard>
+
+      <AdditionalIncludeDirectories>C:/SysGCC/arm-eabi/arm-eabi/sys-include/sys;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
+      <AdditionalIncludeDirectories>../../../../../Utilities;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
+      <PreprocessorDefinitions>DEBUG=1;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions />
+      <CPPLanguageStandard />
     </ClCompile>
+    <Link>
+      <LibrarySearchDirectories>%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <LinkerScript />
+      <AdditionalOptions />
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
     <ClCompile>
       <CLanguageStandard>C11</CLanguageStandard>
+      <AdditionalIncludeDirectories>C:/SysGCC/arm-eabi/arm-eabi/sys-include/sys;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions />
+      <CPPLanguageStandard />
     </ClCompile>
+    <Link>
+      <LibrarySearchDirectories>%(Link.LibrarySearchDirectories)</LibrarySearchDirectories>
+      <AdditionalLibraryNames>%(Link.AdditionalLibraryNames)</AdditionalLibraryNames>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <LinkerScript />
+      <AdditionalOptions />
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
   </ItemGroup>
@@ -56,8 +82,14 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Utilities\SineTables.c" />
     <ClCompile Include="Phaser.c" />
     <ClCompile Include="system_stm32f4xx.c" />
+
+    <ClInclude Include="peripherals.h" />
+
+    <ClInclude Include="..\..\..\..\..\Utilities\SineTables.h" />
+
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F4xxxx\StartupFiles\startup_stm32f446xx.c" />
     <ClCompile Include="$(BSP_ROOT)\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\misc.c" />
