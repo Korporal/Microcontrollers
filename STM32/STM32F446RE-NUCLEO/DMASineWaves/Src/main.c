@@ -96,7 +96,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  GenerateSineTable(SINEWAVE, 0x032, 0xE1C, 4096, &status);	
+  GenerateSineTable(SINEWAVE, 0x040, 0xE1C, 4096, &status);	
 
   /* USER CODE END SysInit */
 
