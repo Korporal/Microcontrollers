@@ -80,7 +80,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint16_t status = 0;
-
+	uint32_t counter = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -119,6 +119,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  counter++;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -244,7 +245,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 9-9;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 100-1;
+  htim2.Init.Period = 10-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
