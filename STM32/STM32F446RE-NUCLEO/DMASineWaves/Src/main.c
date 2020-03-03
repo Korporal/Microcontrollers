@@ -96,7 +96,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  GenerateSineTable(SINEWAVE, 0x040, 0xE1C, 4096, &status);	
+  GenerateSineTable(SINEWAVE, 0x040, 0xE1C, 128, &status);	
 
   /* USER CODE END SysInit */
 
@@ -111,7 +111,7 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim2);
 
-  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, 4096, DAC_ALIGN_12B_R);
+  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, SINEWAVE, 128, DAC_ALIGN_12B_R);
 
   /* USER CODE END 2 */
 
