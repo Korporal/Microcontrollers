@@ -92,7 +92,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t status = 0;
 	uint32_t counter = 0;
-	uint16_t granularity = 128;
+	uint16_t granularity = 256;
 	
   /* USER CODE END 1 */
 
